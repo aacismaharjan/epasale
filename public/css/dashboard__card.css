@@ -1,0 +1,35 @@
+*{
+	margin:0px;
+	padding:0px;
+}
+.dashboard__card{
+    display:flex;
+    justify-content: space-evenly;
+}
+.box{
+    margin: 10px;
+	width: 290px;
+	height: 150px;
+	border-radius: 3%;
+	box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+svg{
+    display: flex;
+    align-items: start;
+ 	padding :6px;
+}
+
+.box h2{
+	display: block;
+	margin-left:100px;
+}
+.box p{
+	font-size:1.5rem;
+	margin-left:130px;
+	margin-top:10px;
+	
+}
+.seller {
+	display: block;
+	margin-left:120px;
+}
