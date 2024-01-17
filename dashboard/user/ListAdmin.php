@@ -52,7 +52,6 @@
                         <th align="left">Address ID</th>
                         <th align="left">Created At</th>
                         <th align="left">Is Active</th>
-                        <th align="left">Action</th>
     </tr>
 
     </thead>
@@ -77,12 +76,6 @@
                         echo "<td>{$row["address_id"]}</td>";
                         echo "<td>{$row["created_at"]}</td>";
                         echo "<td>{$row["is_active"]}</td>";
-                        echo "<td align='center'>
-                                 <form method='POST'>
-                                    <a class='button btn-primary' href='/epasale/dashboard/category/AddCategory.php?id={$admin_id}'>Edit Info</a>
-                                    <input type='text' name='category_id' value='{$admin_id}'  hidden />
-                                 </form>
-                              </td>";
                         echo "</tr>";
 
                     }

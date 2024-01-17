@@ -1,25 +1,42 @@
 <?php
 
-class UserManager {
+class UserManager
+{
     private $conn;
 
-    public function __construct($conn) {
+    public function __construct($conn)
+    {
         $this->conn = $conn;
     }
 
-    public function addUser($postData) {
+    public function addUser($postData)
+    {
         $stmt = $this->conn->prepare("INSERT INTO tbl_users (fname, lname, email, contact_no, gender, dob, password_hash) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $hashed_password = sha1($postData["password"]);
 
         try {
             $this->validateInput($postData);
             $stmt->bind_param("sssssss", $postData['fname'], $postData['lname'], $postData['email'], $postData['contact_no'], $postData['gender'], $postData['dob'], $hashed_password);
+            $user_id = null;
 
             if ($stmt->execute()) {
                 $msg = 'User added successfully.';
                 echo "<script>alert('$msg')</script>";
+                $user_id = $stmt->insert_id;
             } else {
                 throw new \Exception($stmt->error);
+            }
+
+            $role_id = 2;
+            if ($user_id) {
+                $stmt1 = $this->conn->prepare("INSERT INTO tbl_user_roles (role_id, user_id) VALUES (?, ?)");
+                $stmt1->bind_param("ii",$role_id, $user_id);
+
+                if ($stmt1->execute()) {
+                }else {
+                    throw new Exception("Error occured");
+
+                }
             }
         } catch (\Exception $e) {
             $msg = $e->getMessage();
@@ -29,7 +46,8 @@ class UserManager {
         }
     }
 
-    public function login($postData) {
+    public function login($postData)
+    {
         $stmt = $this->conn->prepare("SELECT * FROM tbl_users WHERE email=? and password_hash=?");
         $hashed_password = sha1($_POST["password"], false);
 
@@ -59,11 +77,12 @@ class UserManager {
         }
     }
 
-    function updateUser($user_id, $param, $value) {
+    function updateUser($user_id, $param, $value)
+    {
         // Validate parameters to prevent SQL injection
         $user_id = intval($user_id);
         $param = strtolower($param);
-    
+
         // Prepare and execute the SQL query
         $sql = "UPDATE tbl_users SET $param = ? WHERE user_id = ?";
         $stmt = $this->conn->prepare($sql);
@@ -71,12 +90,13 @@ class UserManager {
         // Bind parameters and execute the query
         $stmt->bind_param("si", $value, $user_id);
         $result = $stmt->execute();
-    
+
         // Close the statement and connection
         $stmt->close();
     }
 
-    private function validateInput($postData) {
+    private function validateInput($postData)
+    {
         $errors = array();
 
         // Validate first_name
@@ -107,8 +127,4 @@ class UserManager {
             throw new \Exception(implode("<br>", $errors));
         }
     }
-
-
 }
-
-?>
