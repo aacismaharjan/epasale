@@ -1,0 +1,5 @@
+STEP 1: git push 
+// to push our local main branch to repo main branch.
+
+STEP 2: git checkout alisha
+// to go to my branch.

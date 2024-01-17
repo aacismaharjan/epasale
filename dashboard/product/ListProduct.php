@@ -1,7 +1,5 @@
 <?php require_once("./../../utils/connection.php"); ?>
-<?php include_once("./../../model/CategoryManager.php"); ?>
-
-
+<?php include_once("./../../model/ProductManager.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,50 +23,72 @@
     </style>
 </head>
 
-
 <body>
     <?php include_once("./../_sidenav.php"); ?>
+
+
+    
+
     <div class="dashboard__content">
         <div class="alert-container"></div>
+
+
         <?php
-        $categoryManager = new CategoryManager($conn);
+        $productManager=new ProductManager($conn);
+        
+        if(isset($_POST["submit"])){
+           $productManager->addProduct($_POST);
+        }else if(isset($_POST["update"])) {
+            $productManager->updateProduct($_POST);
+        }
 
-        if (isset($_POST['submit']))
-            $categoryManager->addCategory($_POST);
-
-        if (isset($_POST['update']))
-            $categoryManager->updateCategory($_POST);
         ?>
-
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th align="left">Category ID</th>
-                        <th align="left">Category Name</th>
+                        <th align="left">Product ID</th>
+                        <th align="left">Photo</th>
+                        <th align="left" width="240px">Product Name</th>
+                        <th align="left" width="340px">Product Description</th>
+                        <th align="left">Unit Price(Rs.)</th>
+                        <th align="center">Status</th>
+                        <th align="left">Created At</th>
+                        <th align="left">Category</th>
                         <th align="center" width="100px">Action</th>
-
                 </thead>
 
                 <tbody>
                     <?php
+                    $productManager = new ProductManager($conn);
+                    $productList = $productManager->getAllProducts();
 
-                    $categoryList = $categoryManager->getAllCategories();
+                    foreach ($productList as $row) {
+                        $product_id = $row["product_id"];
+                        $product_image = "";
+                        $photo_url = $row['product_photo_url'];
 
-                    foreach ($categoryList as $row) {
-                        $category_id = $row["category_id"];
+                        if ($row['product_photo_url']) {
+                            $product_image = "<img src='/epasale/$photo_url' width='80px' height='80px' />";
+                        }
+                      
 
                         echo "<tr>";
-                        echo "<td width='150px'>{$row["category_id"]}</td>";
+                        echo "<td>{$row["product_id"]}</td>";
+                        echo "<td>$product_image</td>";
+                        echo "<td>{$row["product_name"]}</td>";
+                        echo "<td>{$row["product_description"]}</td>";
+                        echo "<td>{$row["unit_price"]}</td>";
+                        echo "<td align='center'>{$row["is_active"]}</td>";
+                        echo "<td>{$row["created_at"]}</td>";
                         echo "<td>{$row["category_name"]}</td>";
                         echo "<td align='center'>
-                                 <form method='POST'>
-                                    <a class='button btn-primary' href='/epasale/dashboard/category/AddCategory.php?id={$category_id}'>Edit Info</a>
-                                    <input type='text' name='category_id' value='{$category_id}'  hidden />
-                                 </form>
-                              </td>";
+                                     <form method='POST'>
+                                        <a class='button btn-primary' href='/epasale/dashboard/product/AddProduct.php?id={$product_id}'>Edit Info</a>
+                                        <input type='text' name='product_id' value='{$product_id}'  hidden />
+                                     </form>
+                                  </td>";
                         echo "</tr>";
-
                     }
                     ?>
                 </tbody>

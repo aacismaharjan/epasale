@@ -59,6 +59,23 @@ class UserManager {
         }
     }
 
+    function updateUser($user_id, $param, $value) {
+        // Validate parameters to prevent SQL injection
+        $user_id = intval($user_id);
+        $param = strtolower($param);
+    
+        // Prepare and execute the SQL query
+        $sql = "UPDATE tbl_users SET $param = ? WHERE user_id = ?";
+        $stmt = $this->conn->prepare($sql);
+
+        // Bind parameters and execute the query
+        $stmt->bind_param("si", $value, $user_id);
+        $result = $stmt->execute();
+    
+        // Close the statement and connection
+        $stmt->close();
+    }
+
     private function validateInput($postData) {
         $errors = array();
 

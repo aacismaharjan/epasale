@@ -43,7 +43,7 @@
         <form method="POST" action="/epasale/dashboard/category/ListCategory.php" class="product-form" id="form-category"
             ENCTYPE="multipart/form-data">
             <h3>Category Information</h3>
-            <?php echo "<input value='{$category_id}' name='category_id' hidden />"; ?>
+            <?php echo "<input value='{$category_id}' name='category_id' hidden />" ?>
 
             <div class="form-group">
                 <label class="form-label" for="category_name">Category Name *</label>

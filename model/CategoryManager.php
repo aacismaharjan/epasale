@@ -99,13 +99,112 @@ class CategoryManager {
         return $categories;
     }
 
-    public function getCategoryById($category_id) {
-        $record = array();
+    //  list seller
 
-        $stmt = $this->conn->prepare("SELECT * FROM tbl_categories WHERE category_id=?");
+    public function getAllUser($role_id) {
+        $users = array();
+        $stmt = $this->conn->prepare("select * from tbl_users u
+        inner join tbl_user_roles ur on u.user_id=ur.user_id
+        where role_id=(?);");
 
         try {
-            $stmt->bind_param("i", $category_id);
+            $stmt->bind_param("i", $role_id);
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                if ($result->num_rows > 0) {
+                    while ($user = $result->fetch_assoc()) {
+                        $users[] = $user;
+                    }
+                }
+
+            } else {
+                throw new \Exception($stmt->error);
+            }
+        } catch (\Exception $e) {
+            $msg = $e->getMessage();
+            echo "<script>alert('$msg')</script>";
+        } finally {
+            $stmt->close();
+        }
+
+
+        return $users;
+    }
+
+// user block
+    public function blockUser($user_id){
+        $stmt=$this->conn->prepare("update tbl_users set
+        is_active=0
+        where user_id=?;");
+
+        try{
+          
+
+            $stmt->bind_para("i", $user_id);
+            
+            if($stmt->execute()){
+                $msg='User is blocked successfully';
+                echo "<script>alert('$msg.')</script>";
+
+            }
+
+            else {
+                throw new \Exception($stmt->error);
+            }
+
+        }
+        catch(\Exception $e){
+            $msg=$e->getMessage();
+            echo"<script>alert('$msg)</script>";
+        }
+        finally{
+            $stmt->close();
+        }
+
+    }
+
+  
+    // order function
+
+    public function getAllOrders() {
+        $orders = array();
+        $stmt = $this->conn->prepare("select * from tbl_orders o
+        inner join tbl_addresses a on o.address_id=a.address_id
+        inner join tbl_users u on o.user_id=u.user_id;");
+
+        try {
+            // $stmt->bind_param("i", $role_id);
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                if ($result->num_rows > 0) {
+                    while ($user = $result->fetch_assoc()) {
+                        $orders[] = $user;
+                    }
+                }
+
+            } else {
+                throw new \Exception($stmt->error);
+            }
+        } catch (\Exception $e) {
+            $msg = $e->getMessage();
+            echo "<script>alert('$msg')</script>";
+        } finally {
+            $stmt->close();
+        }
+
+
+        return $orders;
+    }
+
+
+
+    public function getOrderById($order_id) {
+        $record = array();
+
+        $stmt = $this->conn->prepare("SELECT * FROM tbl_orders WHERE order_id=?");
+
+        try {
+            $stmt->bind_param("oi", $order_id);
 
             if ($stmt->execute()) {
                 $result = $stmt->get_result();
@@ -125,6 +224,7 @@ class CategoryManager {
 
         return $record;
     }
+
 
     private function validateInput($postData) {
         $errors = array();

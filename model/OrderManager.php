@@ -182,5 +182,28 @@ class OrderManager {
     }
 
 
+    function updateOrder($orderId, $param, $value) {
+        // Validate parameters to prevent SQL injection
+        $orderId = intval($orderId);
+        $param = strtolower($param);
+    
+        // Check if the provided parameter is valid
+        if ($param !== 'payment_status' && $param !== 'order_status') {
+            return "Invalid parameter. Accepted values are 'payment_status' or 'order_status'.";
+        }
+    
+        // Prepare and execute the SQL query
+        $sql = "UPDATE tbl_orders SET $param = ? WHERE order_id = ?";
+        $stmt = $this->conn->prepare($sql);
+
+        // Bind parameters and execute the query
+        $stmt->bind_param("si", $value, $orderId);
+        $result = $stmt->execute();
+    
+        // Close the statement and connection
+        $stmt->close();
+    }
+
+
 }
 ?>
