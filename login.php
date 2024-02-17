@@ -59,18 +59,8 @@
             // Get form input elements
             const email = document.getElementById('email');
             const password = document.getElementById('password');
-
-    <!-- Validator class script -->
-    <script src="/epasale/public/js/Validator.js"></script>
-    <script>
-        // function to validate the login form
-    function LoginValidateForm(){
-
-        // Get form input elements
-        const email = document.getElementById('email');
-        const password = document.getElementById('password');
-        const confirmPassword = document.getElementById('confirmPassword');
-        const image = document.getElementById('image');
+            const confirmPassword = document.getElementById('confirmPassword');
+            const image = document.getElementById('image');
 
 
 
