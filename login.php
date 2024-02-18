@@ -1,5 +1,4 @@
-
-<?php require_once("./utils/connection.php"); ?>
+<?php require_once("./config/db.config.php"); ?>
 <?php require_once("./model/UserManager.php"); ?>
 
 <!DOCTYPE html>
@@ -14,10 +13,10 @@
 </head>
 
 <?php
-    if($_SERVER["REQUEST_METHOD"] === "POST") {
-        $userManager = new UserManager($conn);
-        $userManager->login($_POST);
-    }
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $userManager = new UserManager($conn);
+    $userManager->login($_POST);
+}
 ?>
 
 <body>
@@ -33,7 +32,8 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="password"><i class="fa fa-lock"></i> Password</label>
-                    <input class="form-input" type="password" id="password" name="password" placeholder="Enter your password">
+                    <input class="form-input" type="password" id="password" name="password"
+                        placeholder="Enter your password">
                     <span class="error-msg"></span>
                 </div>
 
@@ -54,8 +54,8 @@
     </div>
     <script src="/epasale/public/js/validator.js"></script>
     <script>
-        // function to validate the loogin form
-        function  LoginValidateForm() {
+        // function to validate the login form
+        function LoginValidateForm() {
             // Get form input elements
             const email = document.getElementById('email');
             const password = document.getElementById('password');
@@ -89,13 +89,12 @@
             Validator.clearInputErrors();
 
             // Validate email and password input
-            const isEmailValid = Validator.validateEmail(email, "Please enter valid email.");
-            const isPasswordStrong = Validator.validatePassword(password, "Your Password is Weak");
+            const isEmailValid = Validator.validateRequired(email, "Please enter valid email.");
             const isPasswordValid = Validator.validateRequired(password, "Please enter valid Password.");
 
+
             // If all validations pass, show success alert
-            if (isEmailValid && isPasswordStrong && isPasswordValid) {
-                Validator.clearInputErrors();
+            if (isEmailValid && isPasswordValid) {
                 return true;
             }
             // if fail, Prevent default form submission

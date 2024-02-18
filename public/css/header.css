@@ -38,14 +38,12 @@ header {
 }
 
 .header__searchbar input {
+  font-size: 18px;
+  width: 100%;
+  height: 45px;
+  padding: 10px 0px;
   border: none;
   outline: none;
-  padding: 10px 20px;
-  width: 100%;
-  font-size: 18px;
-  /* border-top-left-radius: 25px; */
-  /* border-bottom-left-radius: 25px; */
-  height: 45px;
 }
 
 .header__searchbar input::placeholder {
@@ -73,7 +71,7 @@ header {
   position: absolute;
   width: 180px;
   background: white;
-  padding: 8px 4px 8px 4px;
+  padding: 8px 8px 8px 8px;
   border-radius: 8px;
   z-index: 9999;
   box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.05);

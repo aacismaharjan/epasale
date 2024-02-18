@@ -1,7 +1,7 @@
 
 .invoice__container{
-  width: 80%;
   margin-right: auto;
+  max-width: 620px;
   margin-left: auto;
   background-color: white;
   margin-top: 1rem;
@@ -10,12 +10,11 @@
 
 .invoice__header{
   background-color:rgb(185, 185, 185);
-  padding: 50px 40px;
+  padding: 32px 24px;
 }
 
 .invoice__brand{
-  max-width:200px;
-  height: 100px;
+  max-width:160px;
 }
 
 .text-white{

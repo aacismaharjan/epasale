@@ -1,4 +1,4 @@
-<?php require_once("./utils/connection.php"); ?>
+<?php require_once("./config/db.config.php"); ?>
 <?php require_once("./model/OrderManager.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,8 +14,8 @@
 </head>
 
 <body>
-    <!-- Includes header partial from ./_header.php -->
-    <?php include_once("_header.php"); ?>
+    <!-- Includes header partial from ./includes/_header.php -->
+    <?php include_once("includes/_header.php"); ?>
 
     <?php
     $orderManager = new OrderManager($conn);
@@ -28,7 +28,7 @@
     <div class="invoice__container">
         <div class="invoice__header">
             <div class="row">
-                <div class="col-6">
+                <div class="col-6" style="display: flex">
                     <img class="invoice__brand" src="/epasale/public/img/epasal-primary-logo.png">
                 </div>
                 <div class="col-6">
@@ -93,8 +93,8 @@
     </div>
     <!-- Table End -->
 
-    <!-- Includes footer partial from ./_footer.php -->
-    <?php include_once("_footer.php"); ?>
+    <!-- Includes footer partial from ./includes/_footer.php -->
+    <?php include_once("includes/_footer.php"); ?>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-<?php require_once("./utils/connection.php"); ?>
+<?php require_once("./config/db.config.php"); ?>
 <?php require_once("./model/UserManager.php"); ?>
 
 <!DOCTYPE html>

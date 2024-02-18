@@ -93,7 +93,7 @@
 }
 
 /* Center the button */
-.sp_content .sp_card__footer .action {
+.sp_content .sp_card_includes/_footer .action {
   display: flex;
   justify-content: center;
   /* Center horizontally */

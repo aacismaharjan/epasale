@@ -1,6 +1,16 @@
-<?php require_once("./utils/connection.php"); ?>
+<?php require_once("./config/db.config.php"); ?>
 <?php require_once("./model/OrderManager.php"); ?>
 <?php require_once("./model/CartManager.php"); ?>
+<?php
+ $orderManager = new OrderManager($conn);
+
+ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
+   if($_POST["submit"] == "checkout" && isset($_COOKIE["cart"])) {
+     $orderManager = new OrderManager($conn);
+     $orderManager->createOrder($_COOKIE["cart"], $_SESSION["user_id"], $_POST["address"],$_POST["landmark"], $_POST["note"], $_POST["payment_method"]);
+   }
+ }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,8 +26,8 @@
 </head>
 
 <body>
-  <!-- Includes header partial from ./_header.php -->
-  <?php include_once("_header.php"); ?>
+  <!-- Includes header partial from ./includes/_header.php -->
+  <?php include_once("includes/_header.php"); ?>
 
   <!-- chec section includes product summary and product billing -->
   <div class="chec__sec">
@@ -34,14 +44,7 @@
           echo "Your cart is empty.";
         }
 
-        $orderManager = new OrderManager($conn);
-
-        if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
-          if($_POST["submit"] == "checkout" && isset($_COOKIE["cart"])) {
-            $orderManager = new OrderManager($conn);
-            $orderManager->createOrder($_COOKIE["cart"], $_SESSION["user_id"], $_POST["address"],$_POST["landmark"], $_POST["note"], $_POST["payment_method"]);
-          }
-        }
+       
       ?>
       <div class="checinfo__cards">
 
@@ -141,14 +144,15 @@
         </div>
 
         <button type="submit" name="submit" value="checkout" class="button btn-primary">Complete Checkout</button>
+
       </form>
     </div>
 
 
   </div>
 
-  <!-- Includes footer partial from ./_footer.php -->
-  <?php include_once("_footer.php"); ?>
+  <!-- Includes footer partial from ./includes/_footer.php -->
+  <?php include_once("includes/_footer.php"); ?>
 
 </body>
 

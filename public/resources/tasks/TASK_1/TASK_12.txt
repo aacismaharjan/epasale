@@ -1,0 +1,5 @@
+FOR ASHA
+1. Handle login in backend. (PHP AND MYSQL)
+2. Handle signup in backend.
+3. Cart Rendering.
+4. Handle Complete Checkout.

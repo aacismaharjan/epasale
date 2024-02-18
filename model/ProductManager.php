@@ -73,14 +73,23 @@ class ProductManager {
     }
 
 
-    public function getAllProducts() {
+    public function getAllProducts($shopID = null) {
+        $condition = "";
+
+        if($shopID) {
+            $condition .= "WHERE u.user_id = $shopID";
+        }
+
         $products = array();
         $stmt = $this->conn->prepare("SELECT *
         FROM 
             tbl_products p
         LEFT JOIN 
             tbl_categories c ON p.category_id = c.category_id
-        ");
+
+        INNER JOIN
+            tbl_users u ON u.user_id = p.user_id
+        $condition ;");
 
         try {
             if ($stmt->execute()) {
@@ -203,9 +212,10 @@ class ProductManager {
     public function getProductById($product_id) {
         $record = array();
 
-        $stmt = $this->conn->prepare("SELECT product_id, product_name,  product_description, 
-        product_photo_url, unit_price, is_active, created_at, category_id
-        FROM  tbl_products
+        $stmt = $this->conn->prepare("SELECT *
+        FROM  tbl_products p
+        INNER JOIN tbl_users u on p.user_id = u.user_id
+        INNER JOIN tbl_categories c on p.category_id = c.category_id
         WHERE product_id=?");
 
         try {
@@ -233,11 +243,21 @@ class ProductManager {
     function getSearchedProduct($query, $catname, $sort) {
         $seller = array();
 
-        if ($sort == "price") {
-            $sort = "DESC";
-        } else {
-            $sort = "ASC";
+        if(strpos($sort, "price") !== false) {
+            if ($sort == "price") {
+                $sort = "unit_price DESC";
+            } else {
+                $sort = "unit_price ASC";
+            }
+        }else {
+            if ($sort == "created_at") {
+                $sort = "created_at ASC";
+            } else {
+                $sort = "created_at DESC";
+            }
         }
+
+        
 
         $stmt = $this->conn->prepare("SELECT p.product_id, p.product_name, p.product_description, p.product_photo_url, p.unit_price, c.category_name
         FROM 
@@ -245,13 +265,13 @@ class ProductManager {
         JOIN 
             tbl_categories c ON p.category_id = c.category_id
         WHERE 
-            p.product_name LIKE ? AND c.category_name LIKE ? 
-        ORDER BY unit_price " . $sort . " ;");
+            (p.product_name LIKE ? OR p.product_description LIKE ? ) AND c.category_name LIKE ? 
+        ORDER BY " . $sort . " ;");
 
 
 
         try {
-            $stmt->bind_param("ss", $query, $catname);
+            $stmt->bind_param("sss", $query, $query, $catname);
             if ($stmt->execute()) {
                 $result = $stmt->get_result();
                 if ($result->num_rows > 0) {

@@ -1,6 +1,40 @@
 <?php
 
+// This alert is use show javascript alert
+// This dd function is to used to debug
+// Also, It is used to print values of any variable.
+class Alert {
+    public static function show($message) {
+        echo "<script>alert('$message');</script>";
+    }
 
+    public static function dd($myvar) {
+        $arrayString = print_r($myvar, true);
+        echo "<pre>{$arrayString}</pre>";
+    }
+}
+
+
+// Takes allowed roles and returns true if a user has that role
+function hasRole($userRoles, $allowedRoles) {
+    if (isset($_SESSION["roles"]) && is_array($_SESSION["roles"])) {
+        return count(array_intersect($_SESSION["roles"], $allowedRoles)) > 0;
+    }
+    return false;
+}
+
+
+// If user not not allowed, redirect to homepages
+function hasPermission($allowedRoles) {
+    if(hasRole($_SESSION["roles"], $allowedRoles) == false) {
+        header("Location: /epasale?error=err_no_access");
+        exit;
+    }
+}
+
+
+
+// Simple GeoLocation class to represent location co-ordinates
 class GeoLocation {
     public $latitude;
     public $longitude;
@@ -28,6 +62,9 @@ class GeoLocation {
 }
 
 
+// This class has haversine formula
+// This calculates the distance between
+// Two locations and returns in km
 class Locator {
     public GeoLocation $source;
     public GeoLocation $target;
@@ -73,5 +110,3 @@ class Locator {
         return ("(<i class=\"fas fa-bicycle\"></i> " . $this->getDistance() . "km)");
     }
 }
-
-?>

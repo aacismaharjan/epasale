@@ -26,12 +26,12 @@
 
             <form action="search.php" style="width: 100%">
                 <input name="query" type="text" placeholder="Search for products and categories" />
-
+                
             </form>
 
             <div class="search_icon_background">
-                <span class="search_icon"><i class="fas fa-search"></i></span>
-            </div>
+                    <span class="search_icon"><i class="fas fa-search"></i></span>
+                </div>
         </div>
 
         <div class="header__nav">
@@ -44,11 +44,12 @@
                         <span class="cart__badge">0</span>
                     </a>
                 </li>
+                <form>
 
-                <?php
+                    <?php
 
-                if (isset($_SESSION) && isset($_SESSION["user_id"])) {
-                    echo '
+                    if (isset($_SESSION) && isset($_SESSION["user_id"])) {
+                        echo '
                     <button class="profile-container">
                         <div class="profile-description">
                             <h4>' . $_SESSION["fullname"] . '</h4>
@@ -61,17 +62,17 @@
                             <a href="/epasale/?action=logout">Logout</a>
                         </div>
                     </button>';
-                } else {
-                    echo '
+                    } else {
+                        echo '
                         <li class="header_nav-links">
                             <a href="/epasale/login.php">Sign in</a>
                         </li>
                         <li class="header_nav-links">
                             <a href="/epasale/signup.php">Sign up </a>
                         </li>';
-                }
+                    }
 
-                ?>
+                    ?>
             </ul>
         </div>
     </div>

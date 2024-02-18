@@ -1,4 +1,4 @@
-<?php require_once("./utils/connection.php"); ?>
+<?php require_once("./config/db.config.php"); ?>
 <?php require_once("./model/CartManager.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,8 +15,8 @@
 </head>
 
 <body>
-    <!-- Includes header partial from ./_header.php -->
-    <?php include_once("_header.php"); ?>
+    <!-- Includes header partial from ./includes/_header.php -->
+    <?php include_once("includes/_header.php"); ?>
 
     
 
@@ -65,17 +65,20 @@
 
 
         <div class="cart__btn">
-            <a class="cart__a" href="/epasale/checkout.php?id=1">
+            <a class="cart__a" href="/epasale/checkout.php?id=1" style="margin-right: 8px">
                 <button class="button btn-primary">Proceed to Checkout</button>
             </a>
-            <button class="button">Cancel</button>
+
+            <a class="cart__a" href="/epasale" >
+                <button class="button">Cancel</button>
+            </a>
         </div>
     </div>
 
     <!-- Cart End -->
 
-    <!-- Includes footer partial from ./_footer.php -->
-    <?php include_once("_footer.php"); ?>
+    <!-- Includes footer partial from ./includes/_footer.php -->
+    <?php include_once("includes/_footer.php"); ?>
 </body>
 
 </html>

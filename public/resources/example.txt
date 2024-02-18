@@ -1,0 +1,18 @@
+# Step 1: Switch to the main branch
+git checkout main
+
+# Step 2: Pull the latest changes from the main branch
+git pull origin main
+
+# Step 3: Switch to your_branch_name
+git checkout your_branch_name
+
+# Step 4: Merge changes from the main branch into your_branch_name
+git merge main
+
+# If there are conflicts, resolve them manually and then continue with the following command
+
+# Step 5: Push the changes to your_branch_name
+git push origin your_branch_name
+Additional content.
+Additional content.

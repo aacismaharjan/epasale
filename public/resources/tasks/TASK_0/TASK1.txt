@@ -1,0 +1,134 @@
+TASKS FOR AGRANI
+
+How would you write JavaScript code that targets the ".seller__card" elements on a website, enabling the increase and decrease of an input tag's value upon clicking corresponding buttons within the ".qtygroup" div? Additionally, the code should log the total quantity to the console when the "Add to Cart" button, identified by the ".seller__btn--cart" class, is clicked.
+
+
+---HINTS STARTS ---
+1. **Selecting Elements:**
+   - Use `document.querySelectorAll` to get all elements with the class "seller__card".
+   - Store the result in a variable (e.g., `sellerCards`).
+
+2. **Loop Through Cards:**
+   - Use a `for` loop to iterate through each card in `sellerCards`.
+
+3. **Element Selection Within a Card:**
+   - Inside the loop, use `card.querySelector` to get specific elements within the current card.
+   - Get the quantity input, decrease button, increase button, and add to cart button.
+
+4. **Initialize Total Quantity:**
+   - Create a variable (e.g., `totalQuantity`) to store and track the total quantity.
+   - Initialize it by parsing the value of the quantity input as an integer.
+
+5. **Event Listener for Decrease Button:**
+   - Add an event listener to the decrease button.
+   - If `totalQuantity` is greater than 1, decrement it and update the quantity input value.
+
+6. **Event Listener for Increase Button:**
+   - Add an event listener to the increase button.
+   - If `totalQuantity` is less than 10, increment it and update the quantity input value.
+
+7. **Event Listener for Add to Cart Button:**
+   - Add an event listener to the add to cart button.
+   - Log the total quantity to the console.
+   - Add your logic for adding the item to the cart.
+
+8. **DOMContentLoaded Event:**
+   - Wrap the entire script inside `document.addEventListener("DOMContentLoaded", function () { ... });` to ensure it runs after the HTML has fully loaded.
+
+9. **Use Older Syntax:**
+   - Instead of `const` and `let`, use `var` for variable declarations.
+   - Instead of `forEach`, use a traditional `for` loop.
+
+10. **Console Logging:**
+    - Use `console.log` to output information to the console for testing.
+
+    
+---HINTS ENDS ---
+
+
+---OLD SCHOOL VERSION STARTS ---
+document.addEventListener("DOMContentLoaded", function () {
+    // Get all elements with the class "seller__card"
+    var sellerCards = document.querySelectorAll(".seller__card");
+
+    // Iterate over each seller card
+    for (var i = 0; i < sellerCards.length; i++) {
+        // Get relevant elements within the current card
+        var card = sellerCards[i];
+        var quantityInput = card.querySelector(".qtygroup__input");
+        var decreaseBtn = card.querySelector(".qtygroup__btn--dec");
+        var increaseBtn = card.querySelector(".qtygroup__btn--inc");
+        var addToCartBtn = card.querySelector(".seller__btn--cart");
+
+        // Initialize total quantity
+        var totalQuantity = parseInt(quantityInput.value);
+
+        // Event listener for the "Decrease" button
+        decreaseBtn.addEventListener("click", function () {
+            if (totalQuantity > 1) {
+                totalQuantity--;
+                quantityInput.value = totalQuantity;
+            }
+        });
+
+        // Event listener for the "Increase" button
+        increaseBtn.addEventListener("click", function () {
+            if (totalQuantity < 10) {
+                totalQuantity++;
+                quantityInput.value = totalQuantity;
+            }
+        });
+
+        // Event listener for the "Add to Cart" button
+        addToCartBtn.addEventListener("click", function () {
+            console.log("Total Quantity:", totalQuantity);
+            // Add your logic for adding to the cart here
+        });
+    }
+});
+
+---OLD SCHOOL VERSION ENDS ---
+
+<!-- HTML structure remains unchanged -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Get all elements with the class "seller__card"
+    const sellerCards = document.querySelectorAll(".seller__card");
+
+    // Iterate over each seller card
+    sellerCards.forEach(function (card) {
+        // Get relevant elements within the current card
+        const quantityInput = card.querySelector(".qtygroup__input");
+        const decreaseBtn = card.querySelector(".qtygroup__btn--dec");
+        const increaseBtn = card.querySelector(".qtygroup__btn--inc");
+        const addToCartBtn = card.querySelector(".seller__btn--cart");
+
+        // Initialize total quantity
+        let totalQuantity = parseInt(quantityInput.value);
+
+        // Event listener for the "Decrease" button
+        decreaseBtn.addEventListener("click", function () {
+            if (totalQuantity > 1) {
+                totalQuantity--;
+                quantityInput.value = totalQuantity;
+            }
+        });
+
+        // Event listener for the "Increase" button
+        increaseBtn.addEventListener("click", function () {
+            if (totalQuantity < 10) {
+                totalQuantity++;
+                quantityInput.value = totalQuantity;
+            }
+        });
+
+        // Event listener for the "Add to Cart" button
+        addToCartBtn.addEventListener("click", function () {
+            console.log("Total Quantity:", totalQuantity);
+            // Add your logic for adding to the cart here
+        });
+    });
+});
+</script>
+
+

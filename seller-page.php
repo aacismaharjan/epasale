@@ -1,6 +1,6 @@
 <?php
 require_once("./model/ProductManager.php");
-require_once("./utils/connection.php"); ?>
+require_once("./config/db.config.php"); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,8 +17,8 @@ require_once("./utils/connection.php"); ?>
 </head>
 
 <body>
-    <!-- Includes header partial from ./_header.php -->
-    <?php include_once("_header.php"); ?>
+    <!-- Includes header partial from ./includes/_header.php -->
+    <?php include_once("includes/_header.php"); ?>
 
     <?php
     $productManager = new ProductManager($conn);
@@ -71,8 +71,8 @@ require_once("./utils/connection.php"); ?>
         </div>
     </div>
 
-    <!-- Includes footer partial from ./_footer.php -->
-    <?php include_once("_footer.php"); ?>
+    <!-- Includes footer partial from ./includes/_footer.php -->
+    <?php include_once("includes/_footer.php"); ?>
 </body>
 <!-- makes sure the js code runs after html is parsed -->
 

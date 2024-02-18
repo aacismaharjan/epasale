@@ -236,7 +236,7 @@ button:active {
 
 
 /* Profile */
-.profile-avatar {
+.profile__avatar {
     color: white;
     text-align: center;
     line-height: 36px;
@@ -249,7 +249,7 @@ button:active {
     font-size: 18px;
 }
 
-.profile-container {
+.profile__container {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -261,33 +261,36 @@ button:active {
     /* min-width: 200px; */
 }
 
-.profile-container:hover .profile-menu {
+.profile__container--dashboard {
+    color: black;
+}
+
+.profile__container:hover .profile__menu {
     display: block;
 }
 
-.profile-container:hover {
+.profile__container:hover {
     background: rgba(0, 0, 0, 0.1);
 }
 
-.profile-description {
+.profile__description {
     line-height: 15px;
 }
 
-.profile-description h4 {
+.profile__description h4 {
     margin: 0px;
     line-height: 17px;
     font-weight: 500;
     font-size: 14px;
 }
 
-.profile-description p {
+.profile__description p {
     font-size: 12px;
     text-transform: uppercase;
     font-weight: bold;
-    color: white;
 }
 
-.profile-menu {
+.profile__menu {
     display: none;
     position: absolute;
     width: 180px;
@@ -300,7 +303,7 @@ button:active {
     box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.05);
 }
 
-.profile-menu a {
+.profile__menu a {
     display: block;
     text-decoration: none;
     text-align: center;
@@ -310,6 +313,6 @@ button:active {
     border-radius: 8px;
 }
 
-.profile-menu a:hover {
+.profile__menu a:hover {
     background: rgba(0, 0, 0, 0.05);
 }

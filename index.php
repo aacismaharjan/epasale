@@ -1,6 +1,7 @@
-<?php require_once("./utils/Locator.php");
+<?php 
+require_once("./config/db.config.php"); 
 require_once("./model/ProductManager.php");
-require_once("./utils/connection.php"); ?>
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,8 +45,8 @@ function getDistance($lat, $lon) {
 
 <body>
 
-    <!-- Includes header partial from ./_header.php -->
-    <?php include_once("_header.php"); ?>
+    <!-- Includes header partial from ./includes/_header.php -->
+    <?php include_once("includes/_header.php"); ?>
 
     <!-- 
         Products Start
@@ -90,7 +91,7 @@ function getDistance($lat, $lon) {
                 <div class="seller__info">
                     <div class="seller__profile">
                         <a class="seller__a" href="/epasale/seller-page.php?id='. $seller["user_id"] .'">
-                            <img class="seller__profile-avatar" src="/epasale/public/img/shops/shop.jpg" width="40px" />
+                            <img class="seller__profile__avatar" src="/epasale/public/img/shops/shop.jpg" width="40px" />
                         </a>
                         <div class="seller__profile-content">
                             <h3>'. $seller["fname"] . ' ' . $seller['lname']  .'</h3>
@@ -109,8 +110,8 @@ function getDistance($lat, $lon) {
 
 
     </div>
-    <!-- Includes footer partial from ./_footer.php -->
-    <?php include_once("_footer.php"); ?>
+    <!-- Includes footer partial from ./includes/_footer.php -->
+    <?php include_once("includes/_footer.php"); ?>
     <script>
         function getUserLocation() {
             if (navigator.geolocation) {

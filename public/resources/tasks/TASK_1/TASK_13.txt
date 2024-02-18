@@ -1,0 +1,8 @@
+FOR ALISHA
+1. CRUD Operation for Categories. (FIRST TASK) (PHP & MYSQL)
+2. Print out customer details along with block/unblock option.
+3. Print out seller details along with block/unblock option.
+4. List out orders list along with update order option, and complete payment option.
+5. List out invoice detail table.
+6. List out products list along with disable/enable option.
+7. Handle search, categories filter, price, nearest shop and pagination.

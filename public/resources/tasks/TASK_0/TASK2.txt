@@ -1,0 +1,111 @@
+FOR ASHA
+Write a JavaScript class named Validator that contains various static methods for form validation. The class should have methods to validate the following:
+
+showError: Displays an error message for a given form element.
+validateRequired: Validates if a form element's value is not empty.
+validateEmail: Validates if a form element's value is a valid email address.
+validatePhoneNumber: Validates if a form element's value is a valid 10-digit phone number.
+validatePassword: Validates if a form element's value meets custom password requirements (e.g., at least 8 characters).
+validateConfirmPassword: Validates if the confirmation password matches the original password.
+validateImageFile: Validates if a file input's value has an allowed image file extension.
+Additionally, create a function named validateForm that prevents the default form submission, validates the username and password fields using the Validator class, and submits the form only if all validations pass.
+
+Lastly, add an event listener to the form so that the validateForm function is called when the form is submitted.
+
+Example usage snippets for validating an email, phone number, password, confirm password, and an image file should also be provided.
+
+Write the JavaScript code based on the requirements mentioned above.
+
+class Validator {
+    static showError(element, message) {
+        const errorElement = element.nextElementSibling;
+        errorElement.textContent = message;
+    }
+
+    static validateRequired(element, errorMessage) {
+        if (!element.value.trim()) {
+            this.showError(element, errorMessage);
+            return false;
+        }
+        return true;
+    }
+
+    static validateEmail(element, errorMessage) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(element.value.trim())) {
+            this.showError(element, errorMessage);
+            return false;
+        }
+        return true;
+    }
+
+    static validatePhoneNumber(element, errorMessage) {
+        const phonePattern = /^\d{10}$/;
+        if (!phonePattern.test(element.value.trim())) {
+            this.showError(element, errorMessage);
+            return false;
+        }
+        return true;
+    }
+
+    static validatePassword(element, errorMessage) {
+        // Add your custom password validation logic here
+        // For simplicity, let's check if it's at least 8 characters
+        if (element.value.length < 8) {
+            this.showError(element, errorMessage);
+            return false;
+        }
+        return true;
+    }
+
+    static validateConfirmPassword(passwordElement, confirmPasswordElement, errorMessage) {
+        if (passwordElement.value !== confirmPasswordElement.value) {
+            this.showError(confirmPasswordElement, errorMessage);
+            return false;
+        }
+        return true;
+    }
+
+    static validateImageFile(element, errorMessage) {
+        const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+        const fileExtension = element.value.split('.').pop().toLowerCase();
+        
+        if (!allowedExtensions.includes(fileExtension)) {
+            this.showError(element, errorMessage);
+            return false;
+        }
+        return true;
+    }
+}
+
+function validateForm(event) {
+    event.preventDefault();
+
+    // Get form inputs
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+
+    // Validate username
+    const isUsernameValid = Validator.validateRequired(usernameInput, 'Username is required');
+
+    // Validate password
+    const isPasswordValid = Validator.validateRequired(passwordInput, 'Password is required');
+
+    // Check if all validations passed
+    if (isUsernameValid && isPasswordValid) {
+        // Submit the form
+        document.getElementById('loginForm').submit();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', validateForm);
+});
+
+// Example usage in your form validation
+const isEmailValid = Validator.validateEmail(emailInput, 'Invalid email address');
+const isPhoneNumberValid = Validator.validatePhoneNumber(phoneInput, 'Invalid phone number');
+const isPasswordValid = Validator.validatePassword(passwordInput, 'Password must be at least 8 characters');
+const isConfirmPasswordValid = Validator.validateConfirmPassword(passwordInput, confirmPasswordInput, 'Passwords do not match');
+const isImageFileValid = Validator.validateImageFile(imageInput, 'Invalid image file');

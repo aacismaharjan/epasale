@@ -2,34 +2,29 @@
 	margin:0px;
 	padding:0px;
 }
-.dashboard__card{
-    display:flex;
-    justify-content: space-evenly;
+main{
+	margin-top:1.4rem; 
+ width:auto;
 }
-.box{
-    margin: 10px;
-	width: 290px;
-	height: 150px;
-	border-radius: 3%;
-	box-shadow: 0 0 15px rgba(0,0,0,0.3);
-}
-svg{
-    display: flex;
-    align-items: start;
- 	padding :6px;
+main input {
+	background-color: transparent;
+	 border:0;
+	 outline:0;
+	 color:var(--dark); 
 }
 
-.box h2{
-	display: block;
-	margin-left:100px;
+main .date{
+	display: inline-block;
+	background-color: var(--clr-white);
+	border-radius: var(--border-radius-1);
+	margin-top:1rem;
+	padding:0.5rem 1.6rem;
+
+
 }
-.box p{
-	font-size:1.5rem;
-	margin-left:130px;
-	margin-top:10px;
-	
-}
-.seller {
-	display: block;
-	margin-left:120px;
+main .insights{
+	display:grid;
+
+grid-template-columns:repeat(3,1fr);
+gap:1.6;
 }

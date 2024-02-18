@@ -1,0 +1,7 @@
+FOR AGRANI
+1. Render Seller Group (including Product Cards) (FIRST TASK) (PHP AND MYSQL)
+2. Render Seller Page.
+3. Render Product Detail Page.
+4. Handle Add to Cart.
+
+

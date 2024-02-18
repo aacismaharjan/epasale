@@ -198,13 +198,40 @@ class CategoryManager {
 
 
 
+    public function getCategoryById($category_id) {
+        $record = array();
+
+        $stmt = $this->conn->prepare("SELECT * FROM tbl_categories WHERE category_id=?");
+
+        try {
+            $stmt->bind_param("i", $category_id);
+
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $record = $result->fetch_assoc();
+                }
+            } else {
+                throw new \Exception($stmt->error);
+            }
+        } catch (\Exception $e) {
+            $msg = $e->getMessage();
+            echo "<script>alert('$msg')</script>";
+        } finally {
+            $stmt->close();
+        }
+
+        return $record;
+    }
+
     public function getOrderById($order_id) {
         $record = array();
 
         $stmt = $this->conn->prepare("SELECT * FROM tbl_orders WHERE order_id=?");
 
         try {
-            $stmt->bind_param("oi", $order_id);
+            $stmt->bind_param("i", $order_id);
 
             if ($stmt->execute()) {
                 $result = $stmt->get_result();

@@ -14,6 +14,7 @@
 @import url("./table.css");
 @import url("./checkout.css");
 @import url("./sellerpage.css");
+@import url("./login.css");
 
 
 
@@ -44,6 +45,11 @@
 }
 
 @media screen and (max-width: 576px) {
+  .header__searchbar {
+    order: -1;
+  }
+
+
   .seller__info button {
     display: none;
   }
@@ -51,9 +57,6 @@
   .form-group {
     padding: 8px !important;
   }
-
-
-  
 }
 
 
@@ -65,24 +68,20 @@
   .header__container {
     flex-wrap: wrap;
     gap: 0.5rem;
-    ;
-
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
   }
 
-  .header__searchbar {
-    order: 1;
-    max-width: unset;
-  }
 
   .header__searchbar input {
     padding: 6px 10px;
-    height: 40px;
+    height: 45px;
     font-size: 16px;
   }
 
   .search_icon_background {
     padding: 6px 18px;
-    height: 40px;
+    height: 45px;
   }
 
 }
@@ -110,3 +109,27 @@
 
 /* Extra Large Devices (extra large screens, 1200px and above) */
 @media (min-width: 1200px) {}
+
+.badge {
+  display: inline-block;
+  text-align: center;
+  background: #FF8800;
+  color: white;
+  padding: 8px 20px;
+  line-height: 1.2;
+  border-radius: 20px;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.badge-empty, .badge-not-empty {
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  background-color: red;
+  padding: 0px;
+}
+
+.badge-not-empty {
+  background-color: green;
+}

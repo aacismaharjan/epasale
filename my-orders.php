@@ -1,4 +1,4 @@
-<?php require_once("./utils/connection.php"); ?>
+<?php require_once("./config/db.config.php"); ?>
 <?php require_once("./model/OrderManager.php"); ?>
 
 <!DOCTYPE html>
@@ -16,8 +16,8 @@
 </head>
 
 <body>
-    <!-- Includes header partial from ./_header.php -->
-    <?php include_once("_header.php"); ?>
+    <!-- Includes header partial from ./includes/_header.php -->
+    <?php include_once("includes/_header.php"); ?>
 
 
 
@@ -51,7 +51,7 @@
                             echo '<td>' . $order['payment_method'] . '</td>';
                             echo '<td>' . $order['total_amount'] . '</td>';
                             echo '<td>' . $order['created_at'] . '</td>';
-                            echo '<td><a href="/epasale/invoice.php?orderID=' . $order['order_id'] . '">Invoice</a></td>';
+                            echo '<td><a class="button btn-primary" href="/epasale/invoice.php?orderID=' . $order['order_id'] . '">Invoice</a></td>';
                             echo '</tr>';
                         }
 
@@ -69,8 +69,8 @@
 
         <br />
 
-        <!-- Includes footer partial from ./_footer.php -->
-        <?php include_once("_footer.php"); ?>
+        <!-- Includes footer partial from ./includes/_footer.php -->
+        <?php include_once("includes/_footer.php"); ?>
 
     </div>
 </body>

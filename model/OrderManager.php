@@ -56,12 +56,10 @@ class OrderManager {
             foreach ($cartArray as $productId => $quantity) {
                 // Insert into tbl_order_details
                 $orderDetailsInsertQuery = "INSERT INTO tbl_order_details (order_id, product_id, quantity)
-                    SELECT ?, ?, ?
-                    FROM tbl_products
-                    WHERE product_id = ?";
+                    VALUES (?, ?, ?) ";
 
                 $stmt = $this->conn->prepare($orderDetailsInsertQuery);
-                $stmt->bind_param("iiii", $orderId, $productId, $quantity, $productId);
+                $stmt->bind_param("iii", $orderId, $productId, $quantity);
 
                 if (!$stmt->execute()) {
                     throw new Exception("Error inserting order details into tbl_order_details.");
@@ -75,6 +73,7 @@ class OrderManager {
 
             // Clear the cart cookie
             setcookie('cart', '', time() - 3600, '/');
+
 
             echo Alert::show("Your order has been placed.");
 
