@@ -24,6 +24,7 @@
     <div class="cart__section">
         <h3 class="cart__sectiontitle">Cart Container</h3>
         <?php
+
             $cartManager = new CartManager($conn);
             $cart = array();
             if(isset($_COOKIE["cart"])) {

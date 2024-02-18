@@ -2,6 +2,7 @@
 
 <?php
 require_once("config/db.config.php");
+require_once("model/CategoryManager.php");
 ?>
 <header class="header">
     <div class="header__container">
@@ -21,7 +22,7 @@ require_once("config/db.config.php");
 
                     <form class="form_sorting_container" action="search.php" onsubmit="handleFilter(event)"
                         method="get">
-                        <label class="form_sorting" for="price">Sort By</label> <br>
+                        <label class="form_sorting" for="price">Sort By</label>
                         <select name="sort" id="sortOptions">
                             <option value="price">High to Low</option>
                             <option value="-price">Low to High</option>
@@ -61,6 +62,7 @@ require_once("config/db.config.php");
                 if (isset($_SESSION) && isset($_SESSION["user_id"])) {
                     echo '
                     <div class="profile__container">
+                        <img  class="profile__avatar" src="/epasale/' . $_SESSION["user_photo_url"] .'" />
                         <div class="profile__description">
                             <h4>' . $_SESSION["fullname"] . '</h4>
                             <p>Customer <svg height="1em" viewBox="0 0 512 512" fill="currentColor"> <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
@@ -69,15 +71,19 @@ require_once("config/db.config.php");
 
                         <div class="profile__menu">
                             <a href="/epasale/my-orders.php">My Orders</a>
+                            <a href="/epasale/my-details.php">My Info</a>
+                            <a href="/epasale/my-shop.php">My Shop Info</a>
+                            <a href="/epasale/change-password.php">Change Password</a>
+                            <a href="/epasale/dashboard">Go to Dashboard</a>
                             <a href="/epasale/?action=logout">Logout</a>
                         </div>
                     </div>';
                 } else {
                     echo '
-                        <li class="header_nav-links">
+                        <li class="header_nav-links auth--links">
                             <a href="/epasale/login.php">Sign in</a>
                         </li>
-                        <li class="header_nav-links">
+                        <li class="header_nav-links auth--links">
                             <a href="/epasale/signup.php">Sign up </a>
                         </li>';
                 }
@@ -91,16 +97,19 @@ require_once("config/db.config.php");
 
 <!-- Category Start -->
 <section id="nav-category">
+    <?php 
+        $categoryManager  = new CategoryManager($conn);
+        $categories = $categoryManager->getAllCategories();
+    ?>
     <div class="container">
         <nav>
             <ul>
-                <li><a class="category" data-name="chicken">Chicken</a>
-                <li><a class="category" data-name="beef">Beef</a>
-                <li><a class="category" data-name="veg">Veg</a>
-                <li><a class="category" data-name="sweets">Sweets & Deserts</a>
-                <li><a class="category" data-name="snacks">Snacks</a>
-                <li><a class="category" data-name="juice">Juice</a>
-                <li><a class="category" data-name="soft drink">Soft Drinks</a>
+                <?php
+                    foreach($categories as $category) {
+                        $name = $category["category_name"];
+                        echo "<li><a class=\"category\" data-name=\"$name\">$name</a>";
+                    }
+                ?>
             </ul>
         </nav>
     </div>

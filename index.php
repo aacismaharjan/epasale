@@ -60,7 +60,6 @@ function getDistance($lat, $lon) {
         $productManager = new ProductManager($conn);
         $sellers =$productManager->getProductsBySellers(null, 50);
 
-
         foreach($sellers as $seller) {
             $productsHTML = "";
 
@@ -91,11 +90,11 @@ function getDistance($lat, $lon) {
                 <div class="seller__info">
                     <div class="seller__profile">
                         <a class="seller__a" href="/epasale/seller-page.php?id='. $seller["user_id"] .'">
-                            <img class="seller__profile__avatar" src="/epasale/public/img/shops/shop.jpg" width="40px" />
+                            <img class="seller__profile__avatar" src="' . $seller["shop_photo_url"] . '" width="40px" />
                         </a>
                         <div class="seller__profile-content">
-                            <h3>'. $seller["fname"] . ' ' . $seller['lname']  .'</h3>
-                            <h4>'. $seller["province"] .' '. getDistance(27.72407583495227, 85.36264737728318) .'</h4>
+                            <h3><a class="seller__a" href="/epasale/seller-page.php?id='. $seller["user_id"] .'">'. $seller["shop_name"] . ' </a></h3>
+                            <h4>'. $seller["shop_address"] . ', ' . $seller["shop_city"]  .' '. getDistance($seller["shop_lat"], $seller["shop_lon"]) .'</h4>
                         </div>
                     </div>
                     <a href="/epasale/seller-page.php?id='. $seller["user_id"] .'" class="seller__a">

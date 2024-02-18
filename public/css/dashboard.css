@@ -1,5 +1,5 @@
 body {
-    background: #eee !important;
+    background: #ddd !important;
 }
 
 .sidebar__container {
@@ -7,7 +7,7 @@ body {
     top: 0px;
     height: 100%;
     width: 220px;
-    overflow-y: auto;
+    overflow-y: hidden;
     background-color: #313a46;
     margin: 0px;
 }
@@ -50,11 +50,13 @@ body {
     cursor: pointer;
 }
 
-.sidebar__nav li svg {
+.sidebar__nav li svg,
+.sidebar__nav li img{
     width: 20px;
     height: 20px;
     margin-bottom: -3px;
     margin-right: 6px;
+    color: inherit;
 }
 
 .sidebar__nav .sidebar__nav-link:hover {
@@ -96,17 +98,21 @@ body {
     color: rgba(255, 255, 255, 1);
 }
 
-.dashboard__content {
+#main-content {
     margin-left: 235px;
-    align-content: right;
-    padding: 15px;
-    background-color: white;
     margin-top: 15px;
     margin-right: 15px;
     margin-bottom: 15px;
-    border-radius: 8px;
     overflow-x: auto;
     transition: 0.2s all ease;
+    
+}
+
+.dashboard__content {
+    padding: 15px;
+    align-content: right;
+    background-color: white;
+    border-radius: 8px;
 }
 
 
@@ -124,13 +130,16 @@ body {
 }
 
 .dashboard-header.content-collapse {
-    margin-left: 0px;
+    margin-left: 0px !important;
 }
 
 .content-collapse {
-    margin-left: 15px;
+    margin-left: 15px !important;
 }
 
+.table-container {
+    overflow-x: auto;
+}
 
 table {
     width: 100%;
@@ -143,6 +152,7 @@ table td {
     padding: 6px 8px;
     border-collapse: collapse;
     background-color: white;
+    white-space: nowrap;
 
 }
 
@@ -150,4 +160,11 @@ table td {
 table th {
     color: white;
     background: #333;
+}
+
+table td img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
 }

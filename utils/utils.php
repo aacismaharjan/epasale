@@ -5,7 +5,7 @@
 // Also, It is used to print values of any variable.
 class Alert {
     public static function show($message) {
-        echo "<script>alert('$message');</script>";
+        echo "<script>alert(`$message`);</script>";
     }
 
     public static function dd($myvar) {
@@ -26,8 +26,9 @@ function hasRole($userRoles, $allowedRoles) {
 
 // If user not not allowed, redirect to homepages
 function hasPermission($allowedRoles) {
-    if(hasRole($_SESSION["roles"], $allowedRoles) == false) {
-        header("Location: /epasale?error=err_no_access");
+    if(!isset($_SESSION["roles"]) || hasRole($_SESSION["roles"], $allowedRoles) == false) {
+        $_SESSION["redirect_url"] = $_SERVER["REQUEST_URI"];
+        header("Location: /epasale/login.php?error=err_no_access");
         exit;
     }
 }
@@ -110,3 +111,43 @@ class Locator {
         return ("(<i class=\"fas fa-bicycle\"></i> " . $this->getDistance() . "km)");
     }
 }
+
+class FileUploader {
+    public function uploadPhoto($photo, $folder, $name = "PROD_") {
+        // Check if the file was uploaded without errors
+        if ($photo['error'] !== UPLOAD_ERR_OK) {
+            throw new \Exception('File upload error: ' . $photo['error']);
+        }
+
+        $name = preg_replace('/[^A-Za-z0-9_.-]/', '', $name);
+
+        // Get the filename and temporary location
+        $filename = $photo['name'];
+        $tempname = $photo['tmp_name'];
+
+        // Get the file extension
+        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+
+        // Generate a unique filename with timestamp or use default name
+        $timestamp = time();
+        $uniqueFilename = $name . $timestamp . '.' . $extension;
+
+        // Define the destination folder
+        if (!file_exists($_SERVER["DOCUMENT_ROOT"] . "/epasale/" . $folder)) {
+            throw new \Exception('Destination folder does not exist.');
+        }
+
+        // Move the uploaded file to the destination folder
+        $destination = $_SERVER["DOCUMENT_ROOT"] . "/epasale/" . $folder . '/' . $uniqueFilename;
+        if (!move_uploaded_file($tempname, $destination)) {
+            throw new \Exception('Failed to move uploaded file.');
+        }
+
+        // Construct the complete URL for the uploaded photo
+        $fileUrl = $folder . '/' . $uniqueFilename;
+
+        return $fileUrl;
+    }
+}
+
+?>

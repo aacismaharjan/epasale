@@ -29,7 +29,7 @@ require_once("./config/db.config.php"); ?>
         <div class="prddetail__wrapper">
             <div class="prddetail">
                 <img src="<?php echo $product["product_photo_url"]; ?>" class="prddetail__img" />
-                <div class="prddetail__info product__card">
+                <div class="prddetail__info product__card" data-pid="<?php echo $product["product_id"];  ?>">
                     <h3 class="prddetail__infotitle seller__cardtitle">
                         <?php echo $product["product_name"]; ?>
                     </h3>
@@ -42,7 +42,7 @@ require_once("./config/db.config.php"); ?>
                         <button class="qtygroup__btn--inc">+</button>
                     </div>
                     <div class="prddetail__btngroup">
-                        <button class="button btn-primary">Buy Now</button>
+                        <button class="button btn-primary seller__btn--buy">Buy Now</button>
                         <button class="button btn-primary seller__btn--cart">Add To Cart</button>
                     </div>
 
@@ -54,7 +54,7 @@ require_once("./config/db.config.php"); ?>
 
 
 
-                    <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                         <?php
                             if ($product["is_active"]) {
                                 echo "<span title='Product Available' class='badge badge-not-empty'></span>";
@@ -67,12 +67,16 @@ require_once("./config/db.config.php"); ?>
                             href="/epasale/search.php?category=<?php echo $product["category_name"]; ?>">
                             <?php echo $product["category_name"]; ?>
                         </a>
+
+                        <a class="link badge"
+                            href="/epasale/seller-page.php?id=<?php echo $product["user_id"]; ?>">
+                            <?php echo $product["shop_name"]; ?>
+                        </a>
                     </div>
 
                     <div style="color: #ddd; margin-top: 16px; font-size: 14px;">
                         <?php echo date("Y/m/d", strtotime($product["created_at"])); ?>
                     </div>
-
                 </div>
             </div>
         </div>

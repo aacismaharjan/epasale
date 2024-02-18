@@ -2,12 +2,14 @@
 <?php require_once("./model/OrderManager.php"); ?>
 <?php require_once("./model/CartManager.php"); ?>
 <?php
+
+ hasPermission(["User"]);
  $orderManager = new OrderManager($conn);
 
  if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
    if($_POST["submit"] == "checkout" && isset($_COOKIE["cart"])) {
      $orderManager = new OrderManager($conn);
-     $orderManager->createOrder($_COOKIE["cart"], $_SESSION["user_id"], $_POST["address"],$_POST["landmark"], $_POST["note"], $_POST["payment_method"]);
+     $orderManager->createOrder($_COOKIE["cart"], $_SESSION["user_id"], $_POST["contact_no"], $_POST["address"],$_POST["landmark"], $_POST["note"], $_POST["payment_method"]);
    }
  }
 ?>
@@ -35,6 +37,8 @@
     <div class="checinfo">
       <h3 class="checinfo__h3">Order Summary</h3>
       <?php
+
+
         $cartManager = new CartManager($conn);
 
         $cart = array();
@@ -74,10 +78,15 @@
     <div class="chec">
       <form class="chec__billing form__wrapper" method="POST">
         <h4 class="checinfo__h3">CheckOut</h4>
+        <h3 class="check_h3">Billing Address (Currently Kathmandu)</h3>
 
-        <h3 class="check_h3">Billing Address</h3>
         <div class="form-group">
-          <label class="form-label" for="fame">Location *</label>
+          <label class="form-label" for="contact_no">Mobile Number*</label>
+          <input class="form-input" id="contact_no" name="contact_no" placeholder="eg: 9810154589" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="address">Address *</label>
           <select class="form-input" id="address" name="address">
             <option value="Baneshwor">Baneshwor</option>
             <option value="Dhumbarahi">Dhumbarahi</option>
@@ -87,12 +96,12 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="landmark">Street name *</label>
+          <label class="form-label" for="landmark">Street name / Landmark / Building*</label>
           <input class="form-input" id="landmark" name="landmark" placeholder="eg: Mueseum Marg" required>
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="fame">Delivery Note</label>
+          <label class="form-label" for="fame">Delivery Note (Additional Address Information)</label>
           <textarea class="form-input" id="note" rows="2" name="note"
             placeholder="eg: Call me When you reach Museum Marg."></textarea>
         </div>

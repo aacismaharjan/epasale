@@ -55,11 +55,21 @@ require_once("./config/db.config.php"); ?>
         <div class="seller_detail">
             <div class="sp-detail">
                 <div class="seller__profile">
-                    <img src="/epasale<?php echo $seller["user_photo_url"]; ?>" alt="logo">
+                    <img src="<?php echo $seller["shop_photo_url"]; ?>" alt="logo" style="object-fit: cover;">
+
+
+                    <?php
+
+                    $lat = $seller["shop_lat"];
+                    $lon = $seller["shop_lon"];
+                    $name = $seller["shop_name"];
+
+$mapsUrl = "https://www.google.com/maps/search/?q=$lat,$lon";
+?>
 
                     <div class="seller__profileinfo">
-                        <h3><?php echo $seller["fname"] . " " . $seller["lname"]; ?></h3>
-                        <p><?php echo $seller["province"] . ", " . $seller["city"]; ?></p>
+                        <h3><?php echo $seller["shop_name"]; ?></h3>
+                        <p><?php echo $seller["shop_address"] . ", " . $seller["shop_city"]; ?></p>
                     </div>
                 </div>
             </div>

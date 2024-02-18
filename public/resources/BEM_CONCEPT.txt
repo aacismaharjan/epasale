@@ -1,6 +1,6 @@
 
-BEM (Block Element Modifier)
-BEM stands for Block Element Modifier. It's a popular methodology for writing CSS that promotes modularity, component-based development, and code reusability.
+BEM (Disabled Element Modifier)
+BEM stands for Disabled Element Modifier. It's a popular methodology for writing CSS that promotes modularity, component-based development, and code reusability.
 
 
 ## EXAMPLE
@@ -45,22 +45,22 @@ AFTER
 
 Here's a breakdown of the three components:
 
-Block:
+Disabled:
 
 Represents a standalone and meaningful UI component. It can exist independently and has its own specific functionality.
 Examples: Navigation bar, button, product seller__card.
 Element:
 
-Represents a part of a block that contributes to its functionality but doesn't have its own standalone meaning.
+Represents a part of a disable that contributes to its functionality but doesn't have its own standalone meaning.
 Examples: Navigation bar's list item, button's icon, product seller__card's price tag.
 Modifier:
 
-Adds variations to the appearance, state, or behavior of a block or element without introducing new classes.
+Adds variations to the appearance, state, or behavior of a disable or element without introducing new classes.
 Examples: button--primary, product-seller__card--active, navigation-item--disabled.
 Benefits of using BEM:
 
 Modular code: BEM promotes a component-based approach, making your code more modular and easier to maintain.
-Reusable components: You can easily reuse blocks and elements across your project by simply adding the appropriate modifiers.
+Reusable components: You can easily reuse disables and elements across your project by simply adding the appropriate modifiers.
 Consistent naming conventions: BEM enforces a consistent naming convention for your CSS classes, making it easier to understand and predict class names.
 Less class duplication: By using modifiers, you can avoid class duplication and maintain a cleaner codebase.
 Improved maintainability: BEM makes your code easier to understand and modify, which can save you time and effort in the long run.

@@ -2,6 +2,8 @@
 <?php require_once("./../../config/dashboard.auth.php"); ?>
 
 <?php include_once("./../../model/CategoryManager.php"); ?>
+<?php hasPermission(["Admin"]); ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,65 +22,69 @@
     <?php include_once("./../../includes/_sidenav.php"); ?>
 
     <?php include_once("./../../includes/_header.dash.php"); ?>
-    
-    <div class="dashboard__content" id="main-content">
-        <div class="alert-container"></div>
-        <?php
-        $categoryManager = new CategoryManager($conn);
 
-        if (isset($_POST['submit']))
-            $categoryManager->addCategory($_POST);
+    <div id="main-content">
+        <div class="dashboard__content">
+            <?php
+            $categoryManager = new CategoryManager($conn);
 
-        if (isset($_POST['update']))
-            $categoryManager->updateCategory($_POST);
-        ?>
+            if (isset($_POST['submit']))
+                $categoryManager->addCategory($_POST);
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                    <th align="left">User ID</th>
-                        <th align="left">User Photo</th>
-                        <th align="left">First Name</th>
-                        <th align="left">Last Name</th>
-                        <th align="left">Email</th>
-                        <th align="left">Contact No</th>
-                        <th align="left">Gender</th>
-                        <th align="left">Address ID</th>
-                        <th align="left">Created At</th>
-                        <th align="left">Is Active</th>
-    </tr>
+            if (isset($_POST['update']))
+                $categoryManager->updateCategory($_POST);
+            ?>
 
-    </thead>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th align="left">User ID</th>
+                            <th align="left">User</th>
+                            <th align="left">Email</th>
+                            <th align="left">Contact No</th>
+                            <th align="left">Gender</th>
+                            <th align="left">Created At</th>
+                            <th align="left">Is Active</th>
+                            <th align="left">Action</th>
+                        </tr>
 
-                <tbody>
-                    <?php
+                    </thead>
 
-                    $adminList = $categoryManager->getAllUser(1);
+                    <tbody>
+                        <?php
 
-                    foreach ( $adminList as $row) {
-                        $admin_id = $row["user_id"];
+                        $adminList = $categoryManager->getAllUser(1);
 
-                        echo "<tr>";
-                        echo "<td>{$row["user_id"]}</td>";
-                        echo "<td><img src='/epasale/public/img/user/default.jpg' width='50px' alt='User Profile'>
-                        </td>";
-                        echo "<td>{$row["fname"]}</td>";
-                        echo "<td>{$row["lname"]}</td>";
-                        echo "<td>{$row["email"]}</td>";
-                        echo "<td>{$row["contact_no"]}</td>";
-                        echo "<td>{$row["gender"]}</td>";
-                        echo "<td>{$row["address_id"]}</td>";
-                        echo "<td>{$row["created_at"]}</td>";
-                        echo "<td>{$row["is_active"]}</td>";
-                        echo "</tr>";
+                        foreach ($adminList as $row) {
+                            $admin_id = $row["user_id"];
+                            $active_status = $row["is_active"] ? "Active" : "Not Active";
 
-                    }
-                    ?>
-                </tbody>
-            </table>
+                            echo "<tr>";
+                            echo "<td>{$row["user_id"]}</td>";
+                            echo "<td><img src='/epasale/" . $row["user_photo_url"] . "' width='50px' alt='User Profile'>&nbsp;{$row["fname"]} {$row["lname"]}</td>";
+                            echo "<td>{$row["email"]}</td>";
+                            echo "<td>{$row["contact_no"]}</td>";
+                            echo "<td>{$row["gender"]}</td>";
+                            echo "<td>{$row["created_at"]}</td>";
+                            echo "<td><span class='table__badge'>{$active_status}</span></td>";
+                            echo "<td align='center'>
+                                 <form method='POST'>
+                                    <a class='button btn-primary' href='/epasale/dashboard/category/AddCategory.php?id={$admin_id}'>Edit Info</a>
+                                    <input type='text' name='category_id' value='{$admin_id}'  hidden />
+                                 </form>
+                              </td>";
+                            echo "</tr>";
+
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
     </div>
+    <script src="/epasale/public/js/dashboard.js"></script>
 </body>
 
 </html>

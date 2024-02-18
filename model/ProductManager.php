@@ -1,4 +1,6 @@
 <?php
+
+
 class ProductManager {
     private $conn;
 
@@ -15,11 +17,8 @@ class ProductManager {
                 throw new Exception("Please fill all the required fields.");
             }
 
-            $filename = $_FILES["product_photo_url"]["name"];
-            $tempname = $_FILES["product_photo_url"]["tmp_name"];
-            $folder =$_SERVER["DOCUMENT_ROOT"] . "/epasale/public/img/products/". $filename;
-            $fileFolder = "public/img/products/". $filename;
-            move_uploaded_file($tempname, $folder);
+            $fileUploader = new FileUploader();
+            $fileFolder = $fileUploader->uploadPhoto($_FILES["product_photo_url"], "public/img/products", "PROD_" . $postData["product_name"]);
 
             $stmt->bind_param("sssiiii", $postData['product_name'], $fileFolder, $postData['product_description'], $postData['unit_price'], $postData["seller_id"], $postData["category_id"], $postData["is_active"]);
 
@@ -41,34 +40,34 @@ class ProductManager {
     public function updateProduct($postData) {
         try {
             $product_id = (int) $postData['product_id'];
-            
+
+            // Check if a new product photo is uploaded
             if (isset($_FILES["product_photo_url"]) && !empty($_FILES["product_photo_url"]["name"])) {
-                $filename = $_FILES["product_photo_url"]["name"];
-                $tempname = $_FILES["product_photo_url"]["tmp_name"];
-                $folder =$_SERVER["DOCUMENT_ROOT"] . "/epasale/public/img/products/". $filename;
-                move_uploaded_file($tempname, $folder);
-                $fileFolder = "public/img/products/". $filename;
-    
+                // Upload the product photo using FileUploader
+                $fileUploader = new FileUploader();
+                $fileUrl = $fileUploader->uploadPhoto($_FILES["product_photo_url"], "public/img/products", "PROD_" . $postData["product_name"]);
+
+                // Prepare the SQL statement with the updated product photo URL
                 $stmt = $this->conn->prepare("UPDATE tbl_products SET product_name=?, product_photo_url=?, product_description=?, unit_price=?, is_active=?, user_id=?, category_id=? WHERE product_id=?");
-    
-                $stmt->bind_param("sssiiiii", $postData['product_name'], $fileFolder, $postData['product_description'], $postData['unit_price'], $postData['is_active'], $postData["seller_id"], $postData["category_id"], $product_id);
+                $stmt->bind_param("sssiiiii", $postData['product_name'], $fileUrl, $postData['product_description'], $postData['unit_price'], $postData['is_active'], $postData["seller_id"], $postData["category_id"], $product_id);
             } else {
+                // Prepare the SQL statement without updating the product photo URL
                 $stmt = $this->conn->prepare("UPDATE tbl_products SET product_name=?, product_description=?, unit_price=?, is_active=?, user_id=?, category_id=? WHERE product_id=?");
-    
                 $stmt->bind_param("ssiiiii", $postData['product_name'], $postData['product_description'], $postData['unit_price'], $postData['is_active'], $postData["seller_id"], $postData["category_id"], $product_id);
             }
 
+            // Execute the SQL statement
             if ($stmt->execute()) {
                 $msg = 'Product updated successfully.';
                 echo "<script>addAlert('$msg.')</script>";
             } else {
                 throw new \Exception($stmt->error);
             }
+
+            $stmt->close();
         } catch (\Exception $e) {
             $msg = $e->getMessage();
             echo "<script>addAlert('$msg')</script>";
-        } finally {
-            $stmt->close();
         }
     }
 
@@ -76,7 +75,7 @@ class ProductManager {
     public function getAllProducts($shopID = null) {
         $condition = "";
 
-        if($shopID) {
+        if ($shopID) {
             $condition .= "WHERE u.user_id = $shopID";
         }
 
@@ -86,7 +85,8 @@ class ProductManager {
             tbl_products p
         LEFT JOIN 
             tbl_categories c ON p.category_id = c.category_id
-
+        INNER JOIN
+            tbl_shops s ON p.user_id = s.user_id
         INNER JOIN
             tbl_users u ON u.user_id = p.user_id
         $condition ;");
@@ -115,12 +115,13 @@ class ProductManager {
 
     public function getProducts($userId = null) {
         $items = array();
-        $stmt = $this->conn->prepare("SELECT  product_id, tbl_users.user_id, tbl_users.is_active, fname, lname, province, city,
-        product_name,  product_description, product_photo_url, unit_price, tbl_products.is_active, tbl_products.created_at
-        FROM  tbl_products
-        INNER JOIN tbl_users on tbl_products.user_id = tbl_users.user_id
-        INNER JOIN tbl_addresses on tbl_addresses.address_id = tbl_users.address_id
-        WHERE tbl_users.is_active = 1 AND (tbl_users.user_id = ? OR ? IS NULL)
+        $stmt = $this->conn->prepare("SELECT  product_id, u.user_id, u.is_active, fname, lname,
+        product_name,  product_description, product_photo_url, unit_price, p.is_active, p.created_at,
+        s.shop_name, s.shop_photo_url, s.shop_lon, s.shop_lat, s.shop_contact_no, s.is_active,s.shop_city,s.shop_address
+        FROM  tbl_products p
+        INNER JOIN tbl_shops s on s.user_id = p.user_id
+        INNER JOIN tbl_users u on p.user_id = u.user_id
+        WHERE u.is_active = 1 AND s.is_verified = 1 AND s.is_active = 1 AND p.is_active = 1 AND (u.user_id = ? OR ? IS NULL)
         ORDER BY fname, lname;");
 
         try {
@@ -155,13 +156,20 @@ class ProductManager {
             unset($temp_product["user_id"]);
             unset($temp_product["fname"]);
             unset($temp_product["lname"]);
+            unset($temp_product["shop_name"]);
+            unset($temp_product["shop_contact_no"]);
+            unset($temp_product["shop_photo_url"]);
+            unset($temp_product["shop_lon"]);
+            unset($temp_product["shop_lat"]);
+            unset($temp_product["shop_city"]);
+            unset($temp_product["shop_address"]);
             unset($temp_product["province"]);
             unset($temp_product["is_active"]);
 
             if (isset($cat_products[$product["user_id"]])) {
                 $cat_products[$product["user_id"]]["products"][] = $temp_product;
             } else {
-                $seller = array("user_id" => $product["user_id"], "fname" => $product["fname"], "lname" => $product["lname"], "province" => $product["province"], "is_active" => $product["is_active"], "address" => $product["city"], "products" => array($temp_product));
+                $seller = array("user_id" => $product["user_id"], "fname" => $product["fname"], "lname" => $product["lname"], "is_active" => $product["is_active"],  "shop_name" => $product["shop_name"], "shop_contact_no" => $product["shop_contact_no"], "shop_photo_url" => $product["shop_photo_url"], "shop_lon" => $product["shop_lon"], "shop_lat" => $product["shop_lat"],"shop_city" => $product["shop_city"],"shop_address" => $product["shop_address"], "products" => array($temp_product));
 
                 $cat_products[$product["user_id"]] = $seller;
             }
@@ -184,10 +192,18 @@ class ProductManager {
     function getSeller($user_id) {
         $seller = null;
 
-        $stmt = $this->conn->prepare("SELECT tbl_users.user_id, user_photo_url, tbl_users.is_active, fname, lname, province, city
-        FROM  tbl_users
-        INNER JOIN tbl_addresses on tbl_addresses.address_id = tbl_users.address_id
-        WHERE tbl_users.is_active = 1 AND tbl_users.user_id = ?
+        // $stmt = $this->conn->prepare("SELECT tbl_users.user_id, user_photo_url, tbl_users.is_active, fname, lname, province, city
+        // FROM  tbl_users
+        // WHERE tbl_users.is_active = 1 AND tbl_users.user_id = ?
+        // ORDER BY fname, lname;");
+
+        $stmt = $this->conn->prepare("SELECT  product_id, u.user_id, u.is_active, fname, lname,
+        product_name,  product_description, product_photo_url, unit_price, p.is_active, p.created_at,
+        s.shop_name, s.shop_photo_url, s.shop_lon, s.shop_lat, s.shop_contact_no, s.is_active,s.shop_city,s.shop_address
+        FROM  tbl_products p
+        INNER JOIN tbl_shops s on s.user_id = p.user_id
+        INNER JOIN tbl_users u on p.user_id = u.user_id
+        WHERE u.is_active = 1 AND u.user_id = ?
         ORDER BY fname, lname;");
 
         try {
@@ -215,6 +231,7 @@ class ProductManager {
         $stmt = $this->conn->prepare("SELECT *
         FROM  tbl_products p
         INNER JOIN tbl_users u on p.user_id = u.user_id
+        INNER JOIN tbl_shops shop on shop.user_id = p.user_id
         INNER JOIN tbl_categories c on p.category_id = c.category_id
         WHERE product_id=?");
 
@@ -243,13 +260,13 @@ class ProductManager {
     function getSearchedProduct($query, $catname, $sort) {
         $seller = array();
 
-        if(strpos($sort, "price") !== false) {
+        if (strpos($sort, "price") !== false) {
             if ($sort == "price") {
                 $sort = "unit_price DESC";
             } else {
                 $sort = "unit_price ASC";
             }
-        }else {
+        } else {
             if ($sort == "created_at") {
                 $sort = "created_at ASC";
             } else {
@@ -257,7 +274,6 @@ class ProductManager {
             }
         }
 
-        
 
         $stmt = $this->conn->prepare("SELECT p.product_id, p.product_name, p.product_description, p.product_photo_url, p.unit_price, c.category_name
         FROM 

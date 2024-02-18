@@ -81,9 +81,8 @@
     border-radius: 8px;
     border: 1px solid #FF9800;
     background: #ffffff;
-    flex: 300px 2 0;
+    flex: 300px 0 0;
     max-width: 420px;
-
     display: flex;
     flex-direction: column;
 }

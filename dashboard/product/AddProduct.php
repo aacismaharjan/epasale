@@ -1,6 +1,8 @@
 <?php require_once("./../../config/db.config.php"); ?>
 <?php require_once("./../../config/dashboard.auth.php"); ?>
 <?php include_once("./../../model/ProductManager.php"); ?>
+<?php hasPermission(["Seller"]); ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +22,8 @@
     <?php include_once("./../../includes/_header.dash.php"); ?>
     
 
-    <div class="main dashboard__content" id="main-content">
+    <div id="main-content">
+    <div class="dashboard__content">
         <?php
         $product_id = "";
         $record = "";
@@ -101,10 +104,10 @@
                 <select class="form-input" name="is_active" id="is_active">
                     <option value="">--Select--</option>
                     <option value="1" <?php echo $product_id && $record['is_active'] === 1 ? "selected" : ""; ?>>
-                        Enable
+                        Enabled
                     </option>
                     <option value="0" <?php echo $product_id && $record['is_active'] === 0 ? "selected" : ""; ?>>
-                        Disable</option>
+                        Disabled</option>
                 </select>
                 <span class="text-error"></span>
             </div>
@@ -122,8 +125,10 @@
             </button>
         </form>
     </div>
+    </div>
 
     <script defer src="./js/script.js"></script>
+    <script src="/epasale/public/js/dashboard.js"></script>
 </body>
 
-</html>nput
+</html>

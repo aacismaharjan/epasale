@@ -28,21 +28,15 @@ class OrderManager {
         $this->addressManager = new AddressManager($conn);
     }
 
-    public function createOrder($cart, $userId, $address, $landmark, $note, $paymentMethod) {
+    public function createOrder($cart, $userId, $contactNo, $address, $landmark, $note, $paymentMethod) {
         $this->conn->begin_transaction();
 
         try {
-            // Create a new address
-            $userAddressId = $this->addressManager->createAddress("Bagmati", "Kathmandu", $address, $landmark, $note);
-
-            if ($userAddressId === false) {
-                throw new Exception("Error creating user address.");
-            }
-
+            
             // Insert into tbl_orders
-            $orderInsertQuery = "INSERT INTO tbl_orders (user_id, address_id, payment_method, created_at) VALUES (?, ?, ?, NOW())";
+            $orderInsertQuery = "INSERT INTO tbl_orders (user_id, contact_no, address, landmark, note, payment_method, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())";
             $stmt = $this->conn->prepare($orderInsertQuery);
-            $stmt->bind_param("iis", $userId, $userAddressId, $paymentMethod);
+            $stmt->bind_param("isssss", $userId, $contactNo, $address, $landmark, $note, $paymentMethod);
 
             if (!$stmt->execute()) {
                 throw new Exception("Error inserting order into tbl_orders.");
@@ -85,12 +79,12 @@ class OrderManager {
         }
 
          // Redirect after 5 seconds
-         echo '<meta http-equiv="refresh" content="2;url=/epasale">';
+         echo '<meta http-equiv="refresh" content="0.5;url=/epasale">';
     }
 
     public function getCustomerOrders($userId) {
         // Retrieve customer orders from the database based on the user ID
-        $query = "SELECT * FROM tbl_orders WHERE user_id = ?";
+        $query = "SELECT * FROM tbl_orders WHERE user_id = ? ORDER BY created_at DESC";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("i", $userId);
         $stmt->execute();
@@ -112,13 +106,13 @@ class OrderManager {
                     u.fname, 
                     u.lname, 
                     u.email, 
-                    u.contact_no, 
-                    a.address, 
-                    a.landmark, 
-                    a.note 
+                    o.contact_no, 
+                    o.address, 
+                    o.city,
+                    o.landmark,
+                    o.note 
                   FROM tbl_orders o
                   INNER JOIN tbl_users u ON o.user_id = u.user_id
-                  INNER JOIN tbl_addresses a ON o.address_id = a.address_id
                   WHERE o.order_id = ?";
         
         $stmt = $this->conn->prepare($query);

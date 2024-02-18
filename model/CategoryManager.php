@@ -131,8 +131,8 @@ class CategoryManager {
         return $users;
     }
 
-// user block
-    public function blockUser($user_id){
+// user disable
+    public function disableUser($user_id){
         $stmt=$this->conn->prepare("update tbl_users set
         is_active=0
         where user_id=?;");
@@ -143,7 +143,7 @@ class CategoryManager {
             $stmt->bind_para("i", $user_id);
             
             if($stmt->execute()){
-                $msg='User is blocked successfully';
+                $msg='User is disableed successfully';
                 echo "<script>alert('$msg.')</script>";
 
             }
@@ -169,8 +169,7 @@ class CategoryManager {
     public function getAllOrders() {
         $orders = array();
         $stmt = $this->conn->prepare("select * from tbl_orders o
-        inner join tbl_addresses a on o.address_id=a.address_id
-        inner join tbl_users u on o.user_id=u.user_id;");
+        inner join tbl_users u on o.user_id=u.user_id ORDER BY o.created_at DESC;");
 
         try {
             // $stmt->bind_param("i", $role_id);

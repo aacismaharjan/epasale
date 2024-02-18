@@ -1,6 +1,8 @@
 <?php require_once("./../../config/db.config.php"); ?>
 <?php require_once("./../../config/dashboard.auth.php"); ?>
 <?php include_once("./../../model/CategoryManager.php"); ?>
+<?php hasPermission(["Admin"]); ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +20,8 @@
 
     <?php include_once("./../../includes/_header.dash.php"); ?>
 
-    <div class="main dashboard__content" id="main-content">
+    <div class="main" id="main-content">
+        <div class="dashboard__content">
         <!-- Fetch a Record -->
         <?php
         $record = "";
@@ -48,6 +51,8 @@
             </button>
         </form>
     </div>
+    </div>
+    <script src="/epasale/public/js/dashboard.js"></script>
 </body>
 
 </html>

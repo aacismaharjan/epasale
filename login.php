@@ -21,8 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <body>
 
+    <?php include_once("includes/_header.php"); ?>
+    
     <div class="form__container">
-        <div class="form">
+        <div class="form shadow">
             <h1 class="form__h1">SIGN IN</h1>
             <form class="form__wrapper" onsubmit="return LoginValidateForm()" method="POST">
                 <div class="form-group">
@@ -52,6 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </form>
         </div>
     </div>
+    <?php include_once("includes/_footer.php"); ?>
     <script src="/epasale/public/js/validator.js"></script>
     <script>
         // function to validate the login form
@@ -59,31 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Get form input elements
             const email = document.getElementById('email');
             const password = document.getElementById('password');
-            const confirmPassword = document.getElementById('confirmPassword');
-            const image = document.getElementById('image');
-
-
-
-        // Clear previous error messages
-        Validator.clearInputErrors();
-
-
-        // Validate email and password input
-        const isEmailValid = Validator.validateRequired(email, "Please enter valid email.");
-        const isPasswordStrong=Validator.validatePassword(password,"Your Password is Weak");
-        const isPasswordValid = Validator.validateRequired(password, "Please enter valid Password.");
-
-
-        // If all validations pass, show success alert
-        if(isEmailValid && isPasswordStrong && isPasswordValid) {
-            alert("Your form looks good");
-            alert("You can now submit your form");
-            document.getElementById('loginForm').submit();
-        }
-        // if fail, Prevent default form submission
-        return false;
-
-    }
 
             // Clear previous error messages
             Validator.clearInputErrors();

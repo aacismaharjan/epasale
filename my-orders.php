@@ -32,6 +32,7 @@
                         <th>Order ID</th>
                         <th>Order Status</th>
                         <th>Payment Method</th>
+                        <th>Payment Status</th>
                         <th>Total Amount</th>
                         <th>Order Date</th>
                         <th>Action</th>
@@ -47,8 +48,9 @@
                         foreach ($orders as $order) {
                             echo '<tr>';
                             echo '<td>' . $order['order_id'] . '</td>';
-                            echo '<td>' . $order['order_status'] . '</td>';
+                            echo '<td><span class="table__badge">' . $order['order_status'] . '</span></td>';
                             echo '<td>' . $order['payment_method'] . '</td>';
+                            echo '<td><span class="table__badge">' . $order['payment_status'] . '</span></td>';
                             echo '<td>' . $order['total_amount'] . '</td>';
                             echo '<td>' . $order['created_at'] . '</td>';
                             echo '<td><a class="button btn-primary" href="/epasale/invoice.php?orderID=' . $order['order_id'] . '">Invoice</a></td>';

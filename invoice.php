@@ -50,7 +50,7 @@
                     <h1 class="invoice__title">Bill From:</h1>
                     <p class="invoice__subtitle">ePasale</p>
                     <p class="invoice__subtitle">Kathmandu</p>
-                    <p class="invoice__subtitle">98XXXXXXXX</p>
+                    <p class="invoice__subtitle">+977 9810154589</p>
                 </div>
                 <div class="col-6">
                     <h1 class="invoice__title text-right">Bill To:</h1>
@@ -58,7 +58,7 @@
                         <?php echo $invoice["fname"] . " " . $invoice["lname"]; ?>
                     </p>
                     <p class="invoice__subtitle text-right">
-                        <?php echo $invoice["address"]; ?>
+                        <?php echo $invoice["address"]  . ", " . $invoice["city"]; ?>
                     </p>
                     <p class="invoice__subtitle text-right">
                         <?php echo $invoice["contact_no"]; ?>
@@ -83,12 +83,25 @@
                     ?>
                 </tbody>
             </table>
+
+            
+
+
             <h3 class="invoice__title">Payment Status:
                 <?php echo $invoice["payment_status"]; ?>
             </h3>
             <h3 class="invoice__title">Payment Mode:
                 <?php echo $invoice["payment_method"]; ?>
             </h3>
+
+            
+        </div>
+
+        <div style="margin-top: 1rem;padding: 0.5rem;line-height: 1.5;border: 1px solid black;">
+            <blockquote >
+               Landmark/Street: <?php echo $invoice["landmark"]; ?> <br/>
+                Delivery Note: <?php echo $invoice["note"]; ?>
+            </blockquote>
         </div>
     </div>
     <!-- Table End -->

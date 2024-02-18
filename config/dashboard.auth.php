@@ -1,1 +1,1 @@
-<?php hasPermission(["Admin", "Seller", "Driver"]); 
+<?php hasPermission(["Admin", "Seller", "Driver", "Delivery Person"]); 

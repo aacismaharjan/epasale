@@ -110,7 +110,7 @@
 /* Extra Large Devices (extra large screens, 1200px and above) */
 @media (min-width: 1200px) {}
 
-.badge {
+.badge,.table__badge {
   display: inline-block;
   text-align: center;
   background: #FF8800;
@@ -120,6 +120,11 @@
   border-radius: 20px;
   font-size: 14px;
   letter-spacing: 2px;
+}
+
+.table__badge {
+  padding: 4px 8px;
+  background: gray;
 }
 
 .badge-empty, .badge-not-empty {

@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var decreaseButton = card.querySelector('.qtygroup__btn--dec');
         var removeButton = card.querySelector(".btn--delete");
         var addToCartButton = card.querySelector(".seller__btn--cart");
+        var buyNowButton = card.querySelector(".seller__btn--buy");
         var totalQuantity = parseInt(quantityInput.value);
         var isCart = JSON.parse(card.getAttribute("data-iscart"));
 
@@ -47,6 +48,13 @@ document.addEventListener("DOMContentLoaded", function () {
             addToCartButton.addEventListener('click', function () {
                 myCart.addProduct(pId, totalQuantity);
                 alert(`${pName} \n${totalQuantity} item(s) added to your cart!`);
+            });
+        }
+
+        if(buyNowButton != null) {
+            buyNowButton.addEventListener('click', function () {
+                myCart.addProduct(pId, totalQuantity);
+                window.location = "/epasale/cart.php";
             });
         }
     }

@@ -1,6 +1,8 @@
 <?php require_once("./../../config/db.config.php"); ?>
 <?php require_once("./../../config/dashboard.auth.php"); ?>
 <?php include_once("./../../model/CategoryManager.php"); ?>
+<?php hasPermission(["Admin"]); ?>
+
 
 
 <!DOCTYPE html>
@@ -19,54 +21,56 @@
 
     <?php include_once("./../../includes/_header.dash.php"); ?>
 
-    
-    <div class="dashboard__content" id="main-content">
-        <div class="alert-container"></div>
-        <?php
-        $categoryManager = new CategoryManager($conn);
 
-        if (isset($_POST['submit']))
-            $categoryManager->addCategory($_POST);
+    <div id="main-content">
+        <div class="dashboard__content">
+            <?php
+            $categoryManager = new CategoryManager($conn);
 
-        if (isset($_POST['update']))
-            $categoryManager->updateCategory($_POST);
-        ?>
+            if (isset($_POST['submit']))
+                $categoryManager->addCategory($_POST);
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th align="left">Category ID</th>
-                        <th align="left">Category Name</th>
-                        <th align="center" width="100px">Action</th>
+            if (isset($_POST['update']))
+                $categoryManager->updateCategory($_POST);
+            ?>
 
-                </thead>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th align="left">Category ID</th>
+                            <th align="left">Category Name</th>
+                            <th align="center" width="100px">Action</th>
 
-                <tbody>
-                    <?php
+                    </thead>
 
-                    $categoryList = $categoryManager->getAllCategories();
+                    <tbody>
+                        <?php
 
-                    foreach ($categoryList as $row) {
-                        $category_id = $row["category_id"];
+                        $categoryList = $categoryManager->getAllCategories();
 
-                        echo "<tr>";
-                        echo "<td width='150px'>{$row["category_id"]}</td>";
-                        echo "<td>{$row["category_name"]}</td>";
-                        echo "<td align='center'>
+                        foreach ($categoryList as $row) {
+                            $category_id = $row["category_id"];
+
+                            echo "<tr>";
+                            echo "<td width='150px'>{$row["category_id"]}</td>";
+                            echo "<td>{$row["category_name"]}</td>";
+                            echo "<td align='center'>
                                  <form method='POST'>
                                     <a class='button btn-primary' href='/epasale/dashboard/category/AddCategory.php?id={$category_id}'>Edit Info</a>
                                     <input type='text' name='category_id' value='{$category_id}'  hidden />
                                  </form>
                               </td>";
-                        echo "</tr>";
+                            echo "</tr>";
 
-                    }
-                    ?>
-                </tbody>
-            </table>
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+    <script src="/epasale/public/js/dashboard.js"></script>
 </body>
 
 </html>
